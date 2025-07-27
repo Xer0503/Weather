@@ -1,13 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import apiWeather from '../services/apiWeather'
+import axios from 'axios'
 
+// State
 const lat = ref(null)
 const lon = ref(null)
 const weather = ref(null)
 const loading = ref(true)
 const errorMsg = ref('')
 
+// Your WeatherAPI key
 const apiKey = 'e6bf2b2b1c324f88acf31802252707'
 
 onMounted(() => {
@@ -30,9 +32,10 @@ onMounted(() => {
   }
 })
 
+// Fetch weather data from WeatherAPI
 async function fetchWeather() {
   try {
-    const res = await apiWeather.get('/current.json', {
+    const res = await axios.get('https://api.weatherapi.com/v1/current.json', {
       params: {
         key: apiKey,
         q: `${lat.value},${lon.value}`
@@ -46,7 +49,6 @@ async function fetchWeather() {
     loading.value = false
   }
 }
-
 </script>
 
 <template>
@@ -57,13 +59,10 @@ async function fetchWeather() {
     <div v-else-if="errorMsg" class="text-red-500">❌ {{ errorMsg }}</div>
     
     <div v-else>
-      <p class="text-lg">{{ weather.location.name }}, {{ weather.location.country }}, {{ weather.location.localtime }}</p>
+      <p class="text-lg">{{ weather.location.name }}, {{ weather.location.country }}</p>
       <p class="text-2xl font-bold">{{ weather.current.temp_c }}°C</p>
       <p>{{ weather.current.condition.text }}</p>
-      <img
-        :src="weather.current.condition.icon"
-        :alt="`Icon showing ${weather.current.condition.text}`"
-      />
+      <img :src="weather.current.condition.icon" alt="weather icon" />
     </div>
   </div>
 </template>

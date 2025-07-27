@@ -15,6 +15,9 @@
 
 <template>
   <div>
+    <button @click="selectedView = 1" class="px-2 py-2 bg-blue-400 space-x-5 rounded-2xl active:bg-blue-700" >1</button>
+    <button @click="selectedView = 2" class="px-2 py-2 bg-blue-400 space-x-5 rounded-2xl active:bg-blue-700" >2</button>
+    <button @click="selectedView = 3" class="px-2 py-2 bg-blue-400 space-x-5 rounded-2xl active:bg-blue-700" >3</button>
     <component :is="views[selectedView]" />
   </div>
 </template>
